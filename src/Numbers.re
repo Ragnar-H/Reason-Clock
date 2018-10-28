@@ -8,7 +8,6 @@ type option = {
 let animatedY = Animated.Value.create(0.0);
 let elementHeight = 24;
 let elementDiff = index => float_of_int(index * elementHeight);
-
 module Styles = {
   open Style;
 
@@ -29,21 +28,41 @@ module Styles = {
 let textStyle = is_current =>
   is_current ? Style.combine(Styles.selectedValue, Styles.text) : Styles.text;
 
-let component = ReasonReact.statelessComponent("Numbers");
+let animateToIndex = index =>
+  Animated.start(
+    Animated.spring(
+      ~value=animatedY,
+      ~toValue=`raw(elementDiff(index)),
+      ~useNativeDriver=true,
+      (),
+    ),
+    ~callback=_didFinish => (),
+    (),
+  );
+
+type state = {selectedValue: string};
+type action =
+  | UpdatedValue(string);
+
+let component = ReasonReact.reducerComponent("Numbers");
 
 let make = (~options, ~selectedValue, _children) => {
   ...component, /* spread the template's other defaults into here  */
-  didMount: _self =>
-    Animated.start(
-      Animated.spring(
-        ~value=animatedY,
-        ~toValue=`raw(elementDiff(24)),
-        ~useNativeDriver=true,
-        (),
-      ),
-      ~callback=_didFinish => (),
-      (),
-    ),
+  initialState: () => {selectedValue: ""},
+  reducer: (action, _state) =>
+    switch (action) {
+    | UpdatedValue(value) => ReasonReact.Update({selectedValue: value})
+    },
+  didUpdate: ({oldSelf, newSelf}) =>
+    if (oldSelf.state.selectedValue != selectedValue) {
+      newSelf.send(UpdatedValue(selectedValue));
+      /* Js.log("updating value");
+         Js.log(selectedValue);
+         Js.log(options); */
+      animateToIndex(int_of_string(selectedValue));
+    },
+  /* Js.log(oldSelf.state); */
+  /* Js.log(newSelf.retainedProps); */
   render: _self =>
     <Animated.View style=Styles.container>
       {
