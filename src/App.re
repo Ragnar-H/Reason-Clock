@@ -13,15 +13,25 @@ module Styles = {
     ]);
 };
 
-let numbers: array(Numbers.option) = [|
-  {value: "24", key: "1"},
-  {value: "56", key: "3"},
-  {value: "57", key: "4"},
-|];
+let createOption = (~value: int): Numbers.option => {
+  value: string_of_int(value),
+  key: string_of_int(value),
+};
+
+let rec createOptionTo = (~length: int) =>
+  if (length <= 0) {
+    [];
+  } else {
+    [createOption(~value=length), ...createOptionTo(~length=length - 1)];
+  };
+
+let hours = createOptionTo(~length=24);
+let minutes = createOptionTo(~length=60);
+let seconds = createOptionTo(~length=60);
 
 let app = () =>
   <View style=Styles.container>
-    <Numbers options=numbers />
-    <Numbers options=numbers />
-    <Numbers options=numbers />
+    <Numbers options=hours />
+    <Numbers options=minutes />
+    <Numbers options=seconds />
   </View>;

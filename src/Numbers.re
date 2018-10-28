@@ -27,12 +27,14 @@ let make = (~options, _children) => {
     <View style=Styles.container>
       {
         ReasonReact.array(
-          Array.map(
-            option =>
-              <Text key={option.key} style=Styles.text>
-                {ReasonReact.string(option.value)}
-              </Text>,
-            options,
+          Array.of_list(
+            List.map(
+              option =>
+                <Text key={option.key} style=Styles.text>
+                  {ReasonReact.string(option.value)}
+                </Text>,
+              options,
+            ),
           ),
         )
       }
