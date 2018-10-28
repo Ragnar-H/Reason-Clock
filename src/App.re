@@ -1,5 +1,18 @@
 open BsReactNative;
 
+module Styles = {
+  open Style;
+
+  let container =
+    style([
+      flex(1.),
+      flexDirection(Row),
+      justifyContent(Center),
+      alignItems(Center),
+      backgroundColor(String("#524078")),
+    ]);
+};
+
 let numbers: array(Numbers.option) = [|
   {value: "24", key: "1"},
   {value: "56", key: "3"},
@@ -7,7 +20,8 @@ let numbers: array(Numbers.option) = [|
 |];
 
 let app = () =>
-  <View>
+  <View style=Styles.container>
     <Numbers options=numbers />
-    <Text> {ReasonReact.string("Let's get this party started!")} </Text>
+    <Numbers options=numbers />
+    <Numbers options=numbers />
   </View>;
