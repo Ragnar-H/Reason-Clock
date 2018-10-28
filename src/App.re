@@ -31,7 +31,7 @@ let seconds = createOptionTo(~length=60);
 
 let app = () =>
   <View style=Styles.container>
-    <Numbers options=hours />
-    <Numbers options=minutes />
-    <Numbers options=seconds />
+    <Numbers selectedValue="23" options=hours />
+    <Numbers selectedValue="37" options=minutes />
+    <Numbers selectedValue="51" options=seconds />
   </View>;

@@ -17,11 +17,16 @@ module Styles = {
     ]);
 
   let text = style([color(String("#ffa500")), fontSize(Float(24.))]);
+
+  let selectedValue = style([backgroundColor(String("#fefefe"))]);
 };
+
+let textStyle = is_current =>
+  is_current ? Style.combine(Styles.selectedValue, Styles.text) : Styles.text;
 
 let component = ReasonReact.statelessComponent("Numbers");
 
-let make = (~options, _children) => {
+let make = (~options, ~selectedValue, _children) => {
   ...component, /* spread the template's other defaults into here  */
   render: _self =>
     <View style=Styles.container>
@@ -30,7 +35,9 @@ let make = (~options, _children) => {
           Array.of_list(
             List.map(
               option =>
-                <Text key={option.key} style=Styles.text>
+                <Text
+                  key={option.key}
+                  style={textStyle(selectedValue == option.value)}>
                   {ReasonReact.string(option.value)}
                 </Text>,
               options,
