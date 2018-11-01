@@ -5,6 +5,7 @@ type option = {
   key: string,
 };
 
+/* TODO this should not be a shared value. But wrapped in a getter function */
 let animatedY = Animated.Value.create(0.0);
 let elementHeight = 24;
 let elementDiff = index => float_of_int(index * elementHeight);
