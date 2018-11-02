@@ -5,20 +5,18 @@ type option = {
   key: string,
 };
 
-/* TODO this should not be a shared value. But wrapped in a getter function */
-let animatedY = Animated.Value.create(0.0);
 let elementHeight = 24;
 let elementDiff = index => float_of_int(index * elementHeight);
 module Styles = {
   open Style;
 
-  let container =
+  let container = animatedVal =>
     style([
       margin(Pt(24.)),
       padding(Pt(8.)),
       flexDirection(Column),
       backgroundColor(String("#91006F")),
-      Transform.makeAnimated(~translateY=animatedY, ()),
+      Transform.makeAnimated(~translateY=animatedVal, ()),
     ]);
 
   let text = style([color(String("#ffa500")), fontSize(Float(24.))]);
@@ -29,10 +27,10 @@ module Styles = {
 let textStyle = is_current =>
   is_current ? Style.combine(Styles.selectedValue, Styles.text) : Styles.text;
 
-let animateToIndex = index =>
+let animateToIndex = (animatedVal, index) =>
   Animated.start(
     Animated.spring(
-      ~value=animatedY,
+      ~value=animatedVal,
       ~toValue=`raw(elementDiff(index)),
       ~useNativeDriver=true,
       (),
@@ -41,7 +39,10 @@ let animateToIndex = index =>
     (),
   );
 
-type state = {selectedValue: string};
+type state = {
+  selectedValue: string,
+  offSetY: Animated.Value.t,
+};
 type action =
   | UpdatedValue(string);
 
@@ -49,23 +50,22 @@ let component = ReasonReact.reducerComponent("Numbers");
 
 let make = (~options, ~selectedValue, _children) => {
   ...component, /* spread the template's other defaults into here  */
-  initialState: () => {selectedValue: ""},
-  reducer: (action, _state) =>
+  initialState: () => {
+    selectedValue: "",
+    offSetY: Animated.Value.create(0.0),
+  },
+  reducer: (action, state) =>
     switch (action) {
-    | UpdatedValue(value) => ReasonReact.Update({selectedValue: value})
+    | UpdatedValue(value) =>
+      ReasonReact.Update({...state, selectedValue: value})
     },
   didUpdate: ({oldSelf, newSelf}) =>
     if (oldSelf.state.selectedValue != selectedValue) {
       newSelf.send(UpdatedValue(selectedValue));
-      /* Js.log("updating value");
-         Js.log(selectedValue);
-         Js.log(options); */
-      animateToIndex(int_of_string(selectedValue));
+      animateToIndex(newSelf.state.offSetY, int_of_string(selectedValue));
     },
-  /* Js.log(oldSelf.state); */
-  /* Js.log(newSelf.retainedProps); */
-  render: _self =>
-    <Animated.View style=Styles.container>
+  render: self =>
+    <Animated.View style={Styles.container(self.state.offSetY)}>
       {
         ReasonReact.array(
           Array.of_list(
