@@ -20,6 +20,7 @@ module Styles = {
       alignSelf(FlexEnd),
       flexDirection(Column),
       backgroundColor(String("#91006F")),
+      borderRadius(5.),
       Transform.makeAnimated(~translateY=animatedVal, ()),
     ]);
 
@@ -27,8 +28,12 @@ module Styles = {
     style([
       height(Pt(float_of_int(elementHeight))),
       color(String("#ffa500")),
-      fontSize(Float(24.)),
+      fontSize(Float(18.)),
       textAlign(Center),
+      textAlignVertical(Bottom),
+      borderRadius(5.),
+      padding(Pt(4.)),
+      overflow(Hidden),
     ]);
 
   let selectedValue = style([backgroundColor(String("#fefefe"))]);
