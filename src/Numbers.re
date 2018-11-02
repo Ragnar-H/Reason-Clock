@@ -36,7 +36,7 @@ module Styles = {
       overflow(Hidden),
     ]);
 
-  let selectedValue = style([backgroundColor(String("#fefefe"))]);
+  let selectedValue = style([backgroundColor(String("#524078"))]);
 };
 
 let textStyle = is_current =>
