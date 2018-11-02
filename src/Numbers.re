@@ -48,6 +48,7 @@ let animateToIndex = (animatedVal, index) =>
       ~value=animatedVal,
       ~toValue=`raw(elementDiff(index)),
       ~useNativeDriver=true,
+      ~friction=10.5,
       (),
     ),
     ~callback=_didFinish => (),
