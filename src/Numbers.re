@@ -1,25 +1,35 @@
 open BsReactNative;
 
+let windowDimensions = Dimensions.get(`window);
+let screenHeight = windowDimensions##height;
 type option = {
   value: string,
   key: string,
 };
 
-let elementHeight = 24;
-let elementDiff = index => float_of_int(index * elementHeight);
+let elementHeight = 30;
+let elementDiff = index => float_of_int(elementHeight * index);
 module Styles = {
   open Style;
 
   let container = animatedVal =>
     style([
-      margin(Pt(24.)),
+      bottom(Pt(float_of_int(screenHeight / 2))),
+      marginHorizontal(Pt(24.)),
       padding(Pt(8.)),
+      alignSelf(FlexEnd),
       flexDirection(Column),
       backgroundColor(String("#91006F")),
       Transform.makeAnimated(~translateY=animatedVal, ()),
     ]);
 
-  let text = style([color(String("#ffa500")), fontSize(Float(24.))]);
+  let text =
+    style([
+      height(Pt(float_of_int(elementHeight))),
+      color(String("#ffa500")),
+      fontSize(Float(24.)),
+      textAlign(Center),
+    ]);
 
   let selectedValue = style([backgroundColor(String("#fefefe"))]);
 };

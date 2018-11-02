@@ -8,7 +8,6 @@ module Styles = {
       flex(1.),
       flexDirection(Row),
       justifyContent(Center),
-      alignItems(Center),
       backgroundColor(String("#524078")),
     ]);
 };
