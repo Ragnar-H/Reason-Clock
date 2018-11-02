@@ -49,7 +49,7 @@ let make = _children => {
     },
   didMount: self =>
     self.state.timerIntervalId :=
-      Some(Js.Global.setInterval(() => self.send(Tick), 1000)),
+      Some(Js.Global.setInterval(() => self.send(Tick), 500)),
   willUnmount: self =>
     switch (self.state.timerIntervalId^) {
     | Some(id) => Js.Global.clearInterval(id)
