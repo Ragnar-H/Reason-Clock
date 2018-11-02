@@ -57,9 +57,14 @@ let make = _children => {
     },
   render: self => {
     /* Cast to int to strip trailing . */
+    /* Add +1 because we want to match what is displayed */
+    /* hours are as displayed */
+    /* minutes are as displayed */
+    /* second counts from 0-59 */
     let currentHour = int_of_float(Js.Date.getHours(self.state.date));
     let currentMinute = int_of_float(Js.Date.getMinutes(self.state.date));
-    let currentSecond = int_of_float(Js.Date.getSeconds(self.state.date));
+    let currentSecond =
+      int_of_float(Js.Date.getSeconds(self.state.date)) + 1;
 
     <View style=Styles.container>
       <Numbers selectedValue={string_of_int(currentHour)} options=hours />
