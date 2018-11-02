@@ -2,6 +2,10 @@
 
 > This is a React Native application developed in Reason.
 
+## Demo
+
+![Demo](./demo/demo-of-clock.gif)
+
 ## Installation
 
 To get started, add the following scripts to your `package.json`:
